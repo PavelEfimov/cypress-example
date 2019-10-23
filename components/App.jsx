@@ -1,48 +1,23 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom';
 
-import Form from './Form';
-import UsersList from './UsersList';
+import Layout from './Layout';
+import Home from './Home';
+import About from './About';
+import UserForm from './UserForm';
 
-import { getUsers, deleteUser } from 'source';
-
-import { showError } from 'utils';
-
-class App extends Component {
-  state = {
-    users: []
-  };
-
-  updateUsersList = () => {
-    getUsers()
-      .then(({ data }) => this.setState({ users: data }))
-      .catch(showError);
-  };
-
-  deleteUser = firstName => () => {
-    deleteUser(firstName)
-      .then(() => {
-        this.updateUsersList();
-      })
-      .catch(showError);
-  };
-
-  componentDidMount() {
-    getUsers()
-      .then(({ data }) => this.setState({ users: data }))
-      .catch(showError);
-  }
-
-  render() {
-    const { updateUsersList, deleteUser } = this;
-    const { users } = this.state;
-
-    return (
-      <div>
-        <UsersList data={users} deleteUser={deleteUser} />
-        <Form updateUsersList={updateUsersList} />
-      </div>
-    );
-  }
-}
+const App = () => (
+  <BrowserRouter>
+    <Layout>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route path="/About" component={About} />
+        <Route path="/About" component={About} />
+        <Route path="/Form" component={UserForm} />
+        <Redirect to="/" />
+      </Switch>
+    </Layout>
+  </BrowserRouter>
+);
 
 export default App;
